@@ -1,7 +1,9 @@
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
+import java.util.Scanner;
 
 public class MoneyExchanger {
 //using singleton pattern
@@ -79,6 +81,42 @@ public class MoneyExchanger {
 		hashmap.put("CHF", new ExchangeRate(new BigDecimal("3.8"), new BigDecimal("4.25")));
 
 		return hashmap;
+	}
+
+	public void startExchange() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("What would you like to do? \n " +
+				"press 'buy' if you want to buy currency \n"
+				+ "press 'sell' if you want sell currency");
+
+		String enterExchanger = scanner.next();
+
+		try {
+			if (enterExchanger.equals("buy")) {
+				System.out.println("Which currency do you want to buy?");
+				String chooseCurrency = scanner.next();
+				System.out.println("How much currency do you want to buy?");
+				BigDecimal chooseAmount = scanner.nextBigDecimal();
+
+				buy(chooseAmount, chooseCurrency);
+
+			} else if (enterExchanger.equals("sell")) {
+				System.out.println("Which currency do you want to sell?");
+				String chooseCurrency = scanner.next();
+				System.out.println("How much currency do you want to sell?");
+				BigDecimal chooseAmount = scanner.nextBigDecimal();
+				Money money = new Money(chooseAmount, chooseCurrency);
+				sell(money);
+
+			} else {
+				System.out.println("Write either buy or sell");
+				startExchange();
+			}
+		}catch (InputMismatchException e) {
+			e.getStackTrace();
+			System.out.println("Wrong input");
+		}
+
 	}
 
 }
