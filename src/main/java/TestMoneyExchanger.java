@@ -31,14 +31,14 @@ public class TestMoneyExchanger {
 		System.out.println("SELL CURRENCY");
 
 
-		BigDecimal currencyToExchange = new BigDecimal("100.3");
+		BigDecimal amountToExchange = new BigDecimal("100.3");
 
 
-		moneyExchanger.sell(new Money(currencyToExchange, "USD"));
-		moneyExchanger.sell(new Money(currencyToExchange, "GBP"));
-		moneyExchanger.sell(new Money(currencyToExchange, "EUR"));
-		moneyExchanger.sell(new Money(currencyToExchange, "CHF"));
-		moneyExchanger.sell(new Money(currencyToExchange, "XXX"));
+		moneyExchanger.sell(new Money(amountToExchange, "USD"));
+		moneyExchanger.sell(new Money(amountToExchange, "GBP"));
+		moneyExchanger.sell(new Money(amountToExchange, "EUR"));
+		moneyExchanger.sell(new Money(amountToExchange, "CHF"));
+		moneyExchanger.sell(new Money(amountToExchange, "XXX"));
 
 	}
 }
