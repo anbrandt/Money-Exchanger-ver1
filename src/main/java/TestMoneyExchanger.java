@@ -10,13 +10,13 @@ public class TestMoneyExchanger {
 
 	public static void main(String[] args) {
 
+		//singleton design pattern - use only one instance of the class
 		MoneyExchanger moneyExchanger = MoneyExchanger.getInstance();
 
-//		Scanner scanner = new Scanner(System.in);
 
-//		ExchangeRate exchangeRate = new ExchangeRate();
-//		moneyExchanger.h("USD", exchangeRate.setBuyPrice(new BigDecimal("4.44")));
-
+		System.out.println();
+		System.out.println("------------");
+		System.out.println("BUY CURRENCY");
 
 		BigDecimal plnToExchange = new BigDecimal("30.22");
 
@@ -33,12 +33,12 @@ public class TestMoneyExchanger {
 
 		BigDecimal currencyToExchange = new BigDecimal("100.3");
 
-		String currency = "USD";
 
-		moneyExchanger.sell(new Money(currencyToExchange, currency));
-
-
-
+		moneyExchanger.sell(new Money(currencyToExchange, "USD"));
+		moneyExchanger.sell(new Money(currencyToExchange, "GBP"));
+		moneyExchanger.sell(new Money(currencyToExchange, "EUR"));
+		moneyExchanger.sell(new Money(currencyToExchange, "CHF"));
+		moneyExchanger.sell(new Money(currencyToExchange, "XXX"));
 
 	}
 }

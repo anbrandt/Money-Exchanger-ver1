@@ -1,5 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
@@ -10,15 +8,9 @@ public class MoneyExchanger {
 
 	private Map<String, ExchangeRate> hashmap = new HashMap<String, ExchangeRate>();
 	ExchangeRate tempExchangeRate;
-	BigDecimal tempBigDecimal;
+	BigDecimal tempFinalPrice;
+	BigDecimal tempCurrencyRate;
 
-	public Map<String, ExchangeRate> getHashmap() {
-		return hashmap;
-	}
-
-	public void setHashmap(Map<String, ExchangeRate> hashmap) {
-		this.hashmap = hashmap;
-	}
 
 
 	private static MoneyExchanger instance;
@@ -41,50 +33,43 @@ public class MoneyExchanger {
 
 			if (amount != null || targetCurrency != null) {
 				tempExchangeRate = initializeHashMap().get(targetCurrency);
-				tempBigDecimal = amount.multiply(tempExchangeRate.getBuyPrice(), new MathContext(3));
+				tempFinalPrice = amount.multiply(tempExchangeRate.getBuyPrice(), new MathContext(3));
 
 				System.out.println("You want to buy: " + amount + " " + targetCurrency);
-				System.out.println("It will cost you " + tempBigDecimal + " PLN");
+				System.out.println("It will cost you " + tempFinalPrice + " PLN");
 			}
 
 		} catch (NullPointerException e) {
 			e.getStackTrace();
 			System.out.println("We don't have this currency " + targetCurrency);
 		}
-		return tempBigDecimal;
+		return tempFinalPrice;
 	}
 
 
 	public BigDecimal sell(Money money) {
-		
-		BigDecimal valueInPLN = null;
 
 		BigDecimal amountToSell = money.getAmount();
-
 		String currencyToExchange = money.getCurrency();
-		tempBigDecimal = initializeHashMap().get(currencyToExchange).getSellPrice();
 
+		try {
 
-		if (currencyToExchange.equals("USD")) {
+			if (amountToSell != null || currencyToExchange != null) {
+				tempExchangeRate = initializeHashMap().get(currencyToExchange);
+				tempCurrencyRate = tempExchangeRate.getSellPrice();
+				tempFinalPrice = amountToSell.multiply(tempExchangeRate.getSellPrice(), new MathContext(3));
 
-			valueInPLN = tempBigDecimal.multiply((amountToSell), new MathContext(3));
+				System.out.println("You want to sell: " + amountToSell + " " + currencyToExchange + "\n" +
+						"The rate is " + tempCurrencyRate + "\n" +
+						"You will get " + tempFinalPrice + " PLN");
 
-		} else if (currencyToExchange.equals("GBP")) {
-
-			valueInPLN = tempBigDecimal.multiply((amountToSell), new MathContext(3));
-		} else if (currencyToExchange.equals("EUR")) {
-
-			valueInPLN = tempBigDecimal.multiply((amountToSell), new MathContext(3));
-		} else if (currencyToExchange.equals("CHF")) {
-
-			valueInPLN = tempBigDecimal.multiply((amountToSell), new MathContext(3));
-		} else {
-			System.out.println("there is no valid currency");
+			}
+		} catch (NullPointerException e) {
+			e.getStackTrace();
+			System.out.println("No currency available " + currencyToExchange);
 		}
-		System.out.println("You want to sell: " + amountToSell + " " + currencyToExchange + "\n" +
-				"The rate is " + tempBigDecimal + "\n" +
-				"You will get " + valueInPLN + " PLN");
-		return valueInPLN;
+
+		return tempFinalPrice;
 	}
 
 	public Map<String, ExchangeRate> initializeHashMap() {
